@@ -1,0 +1,27 @@
+name: C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up C++ environment
+      uses: lukka/setup-cpp@v1
+
+    - name: Install dependencies
+      run: sudo apt-get install -y g++ cppcheck
+
+    - name: Build
+      run: g++ -o main main.cpp
+
+    - name: Run cppcheck
+      run: cppcheck --enable=all --inconclusive --std=c++11 main.cpp
+
+    - name: Run the program
+      run: ./main
